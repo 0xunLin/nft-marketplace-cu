@@ -10,16 +10,13 @@ The final project for the Cyfrin Web3 Full Stack crash course, where we introduc
 
 A full-stack NFT marketplace with listing, buying, and compliance features built with Next.js, TypeScript, and Wagmi.
 
-# STARTING CODEBASE!
+# STARTING CODEBASE! provided
 
 We will need to implement:
 - Update the home page
   - Add all recently listed NFTs
   - Indexer
 - Compliance Engine
-
-If you wish to see what the final product looks like, head over to the `main` branch!
-
 
 # Table of Contents
 
