@@ -92,7 +92,9 @@ async function fetchNFTs(): Promise<NFTQueryResponse> {
         throw new Error("Network response was not ok")
     }
 
-    return response.json()
+    const json = await response.json()
+    if(json.errors) throw new Error(json.errors[0].message)
+    return json as NFTQueryResponse
 }
 
 // Custom hook for fetching and processing NFT data
@@ -130,8 +132,8 @@ function useRecentlyListedNFTs() {
             return !boughtNFTs.has(key) && !canceledNFTs.has(key)
         })
 
-        // Get the top 5
-        const recentNFTs = availableNFTs.slice(0, 100)
+        // Get the top 20 recently listed NFTs
+        const recentNFTs = availableNFTs.slice(0, 20)
 
         // Extract the specific data we need
         return recentNFTs.map(nft => ({
@@ -145,8 +147,9 @@ function useRecentlyListedNFTs() {
 }
 
 // Main component that uses the custom hook
-export default function RecentlyListedNFTs() {
+export default function RecentlyListedNFTs(nft: NFTData) {
     const { isLoading, error, nftDataList } = useRecentlyListedNFTs()
+    const key = `${nft.contractAddress}-${nft.tokenId}`
 
     if (isLoading) return <p>Loading...</p>
     if (error) return <p>Error: {error.message}</p>
@@ -166,12 +169,12 @@ export default function RecentlyListedNFTs() {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-6 gap-4">
                 {nftDataList.map(nft => (
                     <Link
-                        key={`${nft.contractAddress}-${nft.tokenId}`}
-                        href={`/buy-nft/${nft.contractAddress}/${nft.tokenId}`}
+                        key={`${key}`}
+                        href={`/buy-nft/${encodeURIComponent(nft.contractAddress)}/${encodeURIComponent(nft.tokenId)}`}
                         className="block transform transition hover:scale-105"
                     >
                         <NFTBox
-                            key={`${nft.contractAddress}-${nft.tokenId}`}
+                            // key={`${nft.contractAddress}-${nft.tokenId}`} // Removed duplicate key on NFTBox — only outer element needs it.
                             tokenId={nft.tokenId}
                             contractAddress={nft.contractAddress}
                             price={nft.price}
