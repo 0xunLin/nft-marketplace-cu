@@ -118,6 +118,8 @@ export default function BuyNftPage() {
         }
     }, [step, isPurchaseSuccess, router])
 
+    // could have added a check for compliance here, but instead we added it to the layout.tsx, so no matter what page we are on, we can run a compliance check
+
     // Check if the current user is the seller
     const isSeller = seller === address
 

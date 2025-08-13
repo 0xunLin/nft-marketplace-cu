@@ -93,7 +93,7 @@ async function fetchNFTs(): Promise<NFTQueryResponse> {
     }
 
     const json = await response.json()
-    if(json.errors) throw new Error(json.errors[0].message)
+    if (json.errors) throw new Error(json.errors[0].message)
     return json as NFTQueryResponse
 }
 
@@ -147,9 +147,8 @@ function useRecentlyListedNFTs() {
 }
 
 // Main component that uses the custom hook
-export default function RecentlyListedNFTs(nft: NFTData) {
+export default function RecentlyListedNFTs() {
     const { isLoading, error, nftDataList } = useRecentlyListedNFTs()
-    const key = `${nft.contractAddress}-${nft.tokenId}`
 
     if (isLoading) return <p>Loading...</p>
     if (error) return <p>Error: {error.message}</p>
@@ -169,18 +168,18 @@ export default function RecentlyListedNFTs(nft: NFTData) {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-6 gap-4">
                 {nftDataList.map(nft => (
                     <Link
-                        key={`${key}`}
+                        key={`${nft.contractAddress}-${nft.tokenId}`}
                         href={`/buy-nft/${encodeURIComponent(nft.contractAddress)}/${encodeURIComponent(nft.tokenId)}`}
                         className="block transform transition hover:scale-105"
                     >
                         <NFTBox
-                            // key={`${nft.contractAddress}-${nft.tokenId}`} // Removed duplicate key on NFTBox — only outer element needs it.
                             tokenId={nft.tokenId}
                             contractAddress={nft.contractAddress}
                             price={nft.price}
                         />
                     </Link>
                 ))}
+
             </div>
 
             {nftDataList.length === 0 && (
