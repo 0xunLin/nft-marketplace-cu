@@ -16,7 +16,7 @@ We will need to implement:
 - Update the home page
   - Add all recently listed NFTs
   - Indexer
-- Compliance Engine
+- Set up Compliance Engine
 
 # Table of Contents
 
